@@ -4,7 +4,7 @@ using System;
 
 namespace Hans.App.TimeTracker.Handlers
 {
-    public class TimeTrackerHandler
+    public class TimeTrackerHandler : ITimeTrackerHandler
     {
         #region Fields
 

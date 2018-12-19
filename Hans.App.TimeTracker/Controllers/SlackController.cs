@@ -25,10 +25,17 @@ namespace Hans.App.TimeTracker.Controllers
 
         [HttpPost]
         [Route("api/slack/addproject")]
-        public string AddProject(SlackRequest slackRequest)
+        public ActionResult AddProject(SlackRequest slackRequest)
         {
+            // Make sure we're getting some information.
+            if (slackRequest == null ||
+                string.IsNullOrEmpty(slackRequest.Text))
+            {
+                return new JsonResult($"ERROR: No Data Passed.") { StatusCode = 400 };
+            }
+
             AddProjectRequest addRequest = new AddProjectRequest { OrganizationName = slackRequest.TeamId, ProjectName = slackRequest.Text };
-            return $"Project Added w/ ID: { this._timeTrackingHandler.AddProject(addRequest) }";
+            return new JsonResult($"Project Added w/ ID: { this._timeTrackingHandler.AddProject(addRequest) }") { StatusCode = 200 };
         }
 
         /// <summary>
@@ -38,9 +45,9 @@ namespace Hans.App.TimeTracker.Controllers
         /// <returns>The string the user input, italicized.</returns>
         [HttpPost]
         [Route("api/slack/echo")]
-        public string Echo(SlackRequest requestModel)
+        public ActionResult Echo(SlackRequest requestModel)
         {
-            return $"_{ requestModel.Text }_";
+            return new JsonResult($"_{ requestModel.Text }_") { StatusCode = 200 };
         }
     }
 }

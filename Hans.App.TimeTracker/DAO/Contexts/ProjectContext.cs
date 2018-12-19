@@ -1,5 +1,6 @@
 ﻿using Hans.App.TimeTracker.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Hans.App.TimeTracker.DataContexts
 {
@@ -39,6 +40,18 @@ namespace Hans.App.TimeTracker.DataContexts
             builder.Entity<ProjectUser>().HasKey(k => new { k.ProjectId, k.UserId });
             builder.Entity<ProjectUser>().HasOne(p => p.Project).WithMany(u => u.Users).HasForeignKey(u => u.UserId);
             builder.Entity<ProjectUser>().HasOne(u => u.User).WithMany(p => p.Projects).HasForeignKey(p => p.ProjectId);
+
+#if DEBUG
+            // Load Test Data.
+            builder.Entity<Organization>().HasData(
+                    new Organization { Id = new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1), Description = "DevOrg_01", ExternalApplication = "Slack" },
+                    new Organization { Id = new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2), Description = "DevOrg_02", ExternalApplication = "Slack" }
+            );
+
+            builder.Entity<User>().HasData(
+                    new User { Id = new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1), UserName = "DevUser_01", ExternalId = "User01" }
+            );
+#endif
         }
 
         #endregion
