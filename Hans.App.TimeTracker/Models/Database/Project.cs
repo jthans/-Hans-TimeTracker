@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hans.App.Slack.TimeTracker.Models
+namespace Hans.App.TimeTracker.Models
 {
     /// <summary>
     ///  Class that represents a Project in our time-tracking system, this is an item that users can add
@@ -10,6 +12,8 @@ namespace Hans.App.Slack.TimeTracker.Models
     /// </summary>
     public class Project
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         public string Description { get; set; }

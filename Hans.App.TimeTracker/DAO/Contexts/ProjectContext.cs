@@ -1,7 +1,7 @@
-﻿using Hans.App.Slack.TimeTracker.Models;
+﻿using Hans.App.TimeTracker.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hans.App.Slack.TimeTracker.DataContexts
+namespace Hans.App.TimeTracker.DataContexts
 {
     /// <summary>
     ///  DB Context that manages any tables associated to projects, or project management.  We'll keep these as granular
@@ -18,6 +18,9 @@ namespace Hans.App.Slack.TimeTracker.DataContexts
         {
 
         }
+
+        // Organizations Table
+        public DbSet<Organization> Organizations { get; set; }
 
         // Projects Table
         public DbSet<Project> Projects { get; set; }

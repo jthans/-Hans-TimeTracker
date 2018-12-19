@@ -1,4 +1,4 @@
-﻿namespace Hans.App.Slack.TimeTracker.Constants
+﻿namespace Hans.App.TimeTracker.Constants
 {
     /// <summary>
     ///  Class containing all configuration keys used in appsettings.json, so that we can easily access the values

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Hans.App.Slack.TimeTracker
+namespace Hans.App.TimeTracker
 {
     public class Program
     {

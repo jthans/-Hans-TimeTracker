@@ -1,7 +1,8 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hans.App.Slack.TimeTracker.Models
+namespace Hans.App.TimeTracker.Models
 {
     /// <summary>
     ///  Class that represents a time entry into the tracker utility - It indicates the project being tracked,
@@ -15,6 +16,8 @@ namespace Hans.App.Slack.TimeTracker.Models
         [NotMapped]
         public TimeSpan Duration { get { return this.TimeEnd - this.TimeStart; } }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         /// <summary>

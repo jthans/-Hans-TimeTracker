@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hans.App.Slack.TimeTracker.Models
+namespace Hans.App.TimeTracker.Models
 {
     /// <summary>
     ///  Class that represents a user outside of the time tracker application, using an application to push time-tracking
@@ -9,6 +11,8 @@ namespace Hans.App.Slack.TimeTracker.Models
     /// </summary>
     public class User
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         /// <summary>

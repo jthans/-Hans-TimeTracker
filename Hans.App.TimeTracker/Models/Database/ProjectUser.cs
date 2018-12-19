@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Hans.App.Slack.TimeTracker.Models
+namespace Hans.App.TimeTracker.Models
 {
     public class ProjectUser
     {

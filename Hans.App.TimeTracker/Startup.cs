@@ -1,5 +1,5 @@
-﻿using Hans.App.Slack.TimeTracker.Constants;
-using Hans.App.Slack.TimeTracker.DataContexts;
+﻿using Hans.App.TimeTracker.Constants;
+using Hans.App.TimeTracker.DataContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 
-namespace Hans.App.Slack.TimeTracker
+namespace Hans.App.TimeTracker
 {
     public class Startup
     {
