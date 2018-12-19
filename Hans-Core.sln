@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BF96B7A5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hans.App.TimeTracker", "Hans.App.TimeTracker\Hans.App.TimeTracker.csproj", "{C8276CF3-9410-4C4E-B5E7-D3F39A866045}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.App.TimeTracker.Test", "Tests\Hans.App.TimeTracker.Test\Hans.App.TimeTracker.Test.csproj", "{69A7F34E-503F-40C4-8938-78D109230BD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,12 +27,17 @@ Global
 		{C8276CF3-9410-4C4E-B5E7-D3F39A866045}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8276CF3-9410-4C4E-B5E7-D3F39A866045}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8276CF3-9410-4C4E-B5E7-D3F39A866045}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69A7F34E-503F-40C4-8938-78D109230BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69A7F34E-503F-40C4-8938-78D109230BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69A7F34E-503F-40C4-8938-78D109230BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69A7F34E-503F-40C4-8938-78D109230BD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{062D1369-6CD9-4FDC-99BB-792C0480D16A} = {E88B6069-5D28-46FC-8CB4-36D9BA74CABF}
+		{69A7F34E-503F-40C4-8938-78D109230BD1} = {BF96B7A5-7BF2-4F6D-8333-C2C63E03A545}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5FF7C6D-41AE-438A-AB82-94C54CC48E5E}
