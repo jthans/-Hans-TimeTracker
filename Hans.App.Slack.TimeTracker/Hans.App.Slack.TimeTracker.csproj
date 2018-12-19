@@ -10,6 +10,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-beta" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hans.Slack\Hans.Slack.csproj" />
   </ItemGroup>
 
 </Project>

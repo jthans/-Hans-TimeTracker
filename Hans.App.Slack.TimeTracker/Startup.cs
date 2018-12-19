@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Hans.App.Slack.TimeTracker
 {
@@ -26,6 +21,12 @@ namespace Hans.App.Slack.TimeTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // Configure Swagger to allow us to hit the API endpoints.
+            services.AddSwaggerGen(c => 
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Time Tracker API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +43,13 @@ namespace Hans.App.Slack.TimeTracker
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            // Configure Swagger to give us a visible UI to work in.
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Time Tracker API v1");
+            });
         }
     }
 }

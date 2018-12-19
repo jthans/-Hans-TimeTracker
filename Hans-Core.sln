@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.App.Slack.TimeTracker", "Hans.App.Slack.TimeTracker\Hans.App.Slack.TimeTracker.csproj", "{5F8A4980-E118-4133-BC24-1454187A39F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hans.App.Slack.TimeTracker", "Hans.App.Slack.TimeTracker\Hans.App.Slack.TimeTracker.csproj", "{5F8A4980-E118-4133-BC24-1454187A39F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Slack", "Slack", "{E88B6069-5D28-46FC-8CB4-36D9BA74CABF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hans.Slack", "Hans.Slack\Hans.Slack.csproj", "{062D1369-6CD9-4FDC-99BB-792C0480D16A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{5F8A4980-E118-4133-BC24-1454187A39F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F8A4980-E118-4133-BC24-1454187A39F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F8A4980-E118-4133-BC24-1454187A39F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{062D1369-6CD9-4FDC-99BB-792C0480D16A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{062D1369-6CD9-4FDC-99BB-792C0480D16A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{062D1369-6CD9-4FDC-99BB-792C0480D16A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{062D1369-6CD9-4FDC-99BB-792C0480D16A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{062D1369-6CD9-4FDC-99BB-792C0480D16A} = {E88B6069-5D28-46FC-8CB4-36D9BA74CABF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5FF7C6D-41AE-438A-AB82-94C54CC48E5E}
