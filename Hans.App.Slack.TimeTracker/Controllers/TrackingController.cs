@@ -10,8 +10,7 @@ namespace Hans.App.Slack.TimeTracker.Controllers
         /// </summary>
         /// <param name="requestModel">The model containing all request information.</param>
         /// <returns>The string the user inout, italicized.</returns>
-        //[HttpPost]
-        [HttpGet] // Change this!
+        [HttpPost]
         [Route("api/echo")]
         public string Echo([FromQuery]SlackRequest requestModel)
         {

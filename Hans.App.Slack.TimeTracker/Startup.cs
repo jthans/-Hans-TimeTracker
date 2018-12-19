@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Hans.App.Slack.TimeTracker.Constants;
+using Hans.App.Slack.TimeTracker.DataContexts;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -21,6 +24,9 @@ namespace Hans.App.Slack.TimeTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // Configure EF Core - Using MySQl Currently.
+            services.AddDbContext<ProjectContext>(options => options.UseMySql(Configuration[ConfigurationKey.DBConnectionString]));
 
             // Configure Swagger to allow us to hit the API endpoints.
             services.AddSwaggerGen(c => 
