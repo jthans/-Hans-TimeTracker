@@ -21,6 +21,19 @@ namespace Hans.App.Slack.TimeTracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserName = table.Column<string>(nullable: true),
+                    ExternalId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -37,19 +50,6 @@ namespace Hans.App.Slack.TimeTracker.Migrations
                         principalTable: "Organization",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserName = table.Column<string>(nullable: true),
-                    ExternalId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -79,6 +79,30 @@ namespace Hans.App.Slack.TimeTracker.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProjectUserAssociations",
+                columns: table => new
+                {
+                    ProjectId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectUserAssociations", x => new { x.ProjectId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_ProjectUserAssociations_User_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProjectUserAssociations_Projects_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectData_ProjectId",
                 table: "ProjectData",
@@ -95,15 +119,18 @@ namespace Hans.App.Slack.TimeTracker.Migrations
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_ProjectId",
-                table: "User",
-                column: "ProjectId");
+                name: "IX_ProjectUserAssociations_UserId",
+                table: "ProjectUserAssociations",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "ProjectData");
+
+            migrationBuilder.DropTable(
+                name: "ProjectUserAssociations");
 
             migrationBuilder.DropTable(
                 name: "User");

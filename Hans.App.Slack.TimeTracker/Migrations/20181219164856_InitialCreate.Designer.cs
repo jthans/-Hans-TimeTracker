@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hans.App.Slack.TimeTracker.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20181219043940_InitialCreate")]
+    [Migration("20181219164856_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,19 @@ namespace Hans.App.Slack.TimeTracker.Migrations
                     b.ToTable("ProjectData");
                 });
 
+            modelBuilder.Entity("Hans.App.Slack.TimeTracker.Models.ProjectUser", b =>
+                {
+                    b.Property<Guid>("ProjectId");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectUserAssociations");
+                });
+
             modelBuilder.Entity("Hans.App.Slack.TimeTracker.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -78,13 +91,9 @@ namespace Hans.App.Slack.TimeTracker.Migrations
 
                     b.Property<string>("ExternalId");
 
-                    b.Property<Guid?>("ProjectId");
-
                     b.Property<string>("UserName");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("User");
                 });
@@ -107,11 +116,17 @@ namespace Hans.App.Slack.TimeTracker.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Hans.App.Slack.TimeTracker.Models.User", b =>
+            modelBuilder.Entity("Hans.App.Slack.TimeTracker.Models.ProjectUser", b =>
                 {
-                    b.HasOne("Hans.App.Slack.TimeTracker.Models.Project")
+                    b.HasOne("Hans.App.Slack.TimeTracker.Models.User", "User")
+                        .WithMany("Projects")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Hans.App.Slack.TimeTracker.Models.Project", "Project")
                         .WithMany("Users")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

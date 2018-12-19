@@ -24,5 +24,20 @@ namespace Hans.App.Slack.TimeTracker.DataContexts
 
         // ProjectData Table
         public DbSet<ProjectData> ProjectData { get; set; }
+
+        // Project/User Composite Table
+        public DbSet<ProjectUser> ProjectUserAssociations { get; set; }
+
+        #region Events
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            // Set up the ProjectUser Composite Table.
+            builder.Entity<ProjectUser>().HasKey(k => new { k.ProjectId, k.UserId });
+            builder.Entity<ProjectUser>().HasOne(p => p.Project).WithMany(u => u.Users).HasForeignKey(u => u.UserId);
+            builder.Entity<ProjectUser>().HasOne(u => u.User).WithMany(p => p.Projects).HasForeignKey(p => p.ProjectId);
+        }
+
+        #endregion
     }
 }

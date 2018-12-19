@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Hans.App.Slack.TimeTracker.Models
 {
@@ -22,5 +23,10 @@ namespace Hans.App.Slack.TimeTracker.Models
         ///     while still allowing us to manage our DB entries ourselves.
         /// </summary>
         public string ExternalId { get; set; }
+
+        /// <summary>
+        ///  Gets or sets the collection of projects for this User - Easy when a subset of the user's project accessibility is needed.
+        /// </summary>
+        public ICollection<ProjectUser> Projects { get; set; }
     }
 }

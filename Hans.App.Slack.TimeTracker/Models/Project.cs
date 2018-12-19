@@ -25,6 +25,6 @@ namespace Hans.App.Slack.TimeTracker.Models
         ///     assigned to it, but to simplify searches we can associate users with this project and they are the only ones that
         ///     can access it.
         /// </summary>
-        public ICollection<User> Users { get; set; }
+        public ICollection<ProjectUser> Users { get; set; }
     }
 }
