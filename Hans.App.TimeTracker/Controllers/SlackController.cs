@@ -1,4 +1,5 @@
-﻿using Hans.App.TimeTracker.Interfaces;
+﻿using Hans.App.TimeTracker.Enums;
+using Hans.App.TimeTracker.Interfaces;
 using Hans.App.TimeTracker.Models;
 using Hans.Slack;
 using Microsoft.AspNetCore.Mvc;
@@ -46,8 +47,14 @@ namespace Hans.App.TimeTracker.Controllers
                 return new JsonResult($"ERROR: No Data Passed.") { StatusCode = 400 };
             }
 
-            AddProjectRequest addRequest = new AddProjectRequest { OrganizationName = slackRequest.TeamId, ProjectName = slackRequest.Text };
-            return new JsonResult($"Project Added w/ ID: { this._timeTrackingHandler.AddProject(addRequest) }") { StatusCode = 200 };
+            AddProjectRequest addRequest = new AddProjectRequest
+            {
+                OrganizationName = slackRequest.TeamId,
+                ProjectName = slackRequest.Text
+            };
+
+            this._timeTrackingHandler.AddProject(addRequest);
+            return new JsonResult($"Project Added.") { StatusCode = 200 };
         }
 
         /// <summary>
@@ -87,8 +94,22 @@ namespace Hans.App.TimeTracker.Controllers
                 UserId = slackRequest.UserId
             };
 
-            this._timeTrackingHandler.StartTracking(startRequest);
-            return new JsonResult($"{ slackRequest.UserName } has started working on { startRequest.ProjectName }.") { StatusCode = 200 };
+            // Determine the proper error message for the result calculated.
+            var displayResult = "Project Started.";
+            var trackingResult = this._timeTrackingHandler.StartTracking(startRequest).Result;
+            switch (trackingResult)
+            {
+                case StartTrackingResult.Failure:
+                    displayResult = "Project Start FAILED.";
+                    break;
+                case StartTrackingResult.ProjectAlreadyStarted:
+                    displayResult = "Project Already Being Tracked.";
+                    break;
+                default:
+                    break;
+            }
+
+            return new JsonResult(displayResult) { StatusCode = 200 };
         }
 
         #endregion

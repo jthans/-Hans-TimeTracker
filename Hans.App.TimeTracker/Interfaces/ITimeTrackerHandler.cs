@@ -1,4 +1,5 @@
-﻿using Hans.App.TimeTracker.Models;
+﻿using Hans.App.TimeTracker.Enums;
+using Hans.App.TimeTracker.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -22,6 +23,6 @@ namespace Hans.App.TimeTracker.Interfaces
         /// </summary>
         /// <param name="startRequest">All request information needed to handle the start.</param>
         /// <returns>Nothing, is async.</returns>
-        Task<Guid> StartTracking(StartTrackingRequest startRequest);
+        Task<StartTrackingResult> StartTracking(StartTrackingRequest startRequest);
     }
 }

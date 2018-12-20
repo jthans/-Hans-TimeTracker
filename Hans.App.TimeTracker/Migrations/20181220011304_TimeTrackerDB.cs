@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Hans.App.TimeTracker.Migrations
 {
-    public partial class OrganizationsAdded : Migration
+    public partial class TimeTrackerDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,7 @@ namespace Hans.App.TimeTracker.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     ProjectId = table.Column<Guid>(nullable: true),
-                    TimeEnd = table.Column<DateTime>(nullable: false),
+                    TimeEnd = table.Column<DateTime>(nullable: true),
                     TimeStart = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<Guid>(nullable: true)
                 },
@@ -102,6 +102,21 @@ namespace Hans.App.TimeTracker.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Organizations",
+                columns: new[] { "Id", "Description", "ExternalApplication" },
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), "DevOrg_01", "Slack" });
+
+            migrationBuilder.InsertData(
+                table: "Organizations",
+                columns: new[] { "Id", "Description", "ExternalApplication" },
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000002"), "DevOrg_02", "Slack" });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "ExternalId", "UserName" },
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), "User01", "DevUser_01" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectData_ProjectId",

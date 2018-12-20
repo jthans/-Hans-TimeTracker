@@ -59,7 +59,7 @@ namespace Hans.App.TimeTracker.Migrations
 
                     b.Property<Guid?>("ProjectId");
 
-                    b.Property<DateTime>("TimeEnd");
+                    b.Property<DateTime?>("TimeEnd");
 
                     b.Property<DateTime>("TimeStart");
 

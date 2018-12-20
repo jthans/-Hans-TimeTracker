@@ -33,7 +33,7 @@ namespace Hans.App.TimeTracker.DataContexts
         public DbSet<ProjectUser> ProjectUserAssociations { get; set; }
 
         // User Table
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
 
         #region Events
 

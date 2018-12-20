@@ -97,8 +97,37 @@ namespace Hans.App.TimeTracker.DAO
             ProjectData newData = new ProjectData() { Project = workingProject, User = workingUser, TimeStart = startTrackingRequest.StartTime };
             this._dbContext.Add(newData);
             await this._dbContext.SaveChangesAsync();
-
+            
             return newData.Id;
+        }
+
+        /// <summary>
+        ///  Finish tracking a particular activity record.
+        /// </summary>
+        /// <param name="activityId">Which activity we'd like to finish tracking.</param>
+        /// <param name="timeFinished">The time the activity was finished.</param>
+        public async Task FinishProjectData(Guid activityId, DateTime timeFinished)
+        {
+            var activityData = this._dbContext.ProjectData.FirstOrDefault(x => x.Id == activityId);
+            activityData.TimeEnd = timeFinished;
+
+            this._dbContext.Update(activityData);
+            await this._dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        ///  See if the user has any open projects, if there aren't any open projects (no entries w/ EndTime NULL), we won't return anything.
+        /// </summary>
+        /// <param name="organizationName">Name of the organization the user exists within.</param>
+        /// <param name="userName">Name of the user to search for.</param>
+        /// <returns>The project data that's open, if any - Null if none.</returns>
+        public ProjectData FindOpenProject(string organizationName, string userName)
+        {
+            // Get the most recent ProjectData entry that has not been closed out (TimeEnd == NULL)
+            return this._dbContext.ProjectData.OrderByDescending(x => x.TimeStart)
+                                                .FirstOrDefault(x => x.Project.Organization.Description == organizationName && 
+                                                                        !x.TimeEnd.HasValue &&
+                                                                        x.User.UserName == userName);
         }
 
         /// <summary>
@@ -118,7 +147,7 @@ namespace Hans.App.TimeTracker.DAO
         /// <returns>The user found by name, or null if none was found.</returns>
         public User GetUser(string userName)
         {
-            return this._dbContext.Users.FirstOrDefault(x => x.UserName == userName);
+            return this._dbContext.User.FirstOrDefault(x => x.UserName == userName);
         }
     }
 }
