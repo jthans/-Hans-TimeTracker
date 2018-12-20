@@ -32,6 +32,9 @@ namespace Hans.App.TimeTracker.DataContexts
         // Project/User Composite Table
         public DbSet<ProjectUser> ProjectUserAssociations { get; set; }
 
+        // User Table
+        public DbSet<User> Users { get; set; }
+
         #region Events
 
         protected override void OnModelCreating(ModelBuilder builder)

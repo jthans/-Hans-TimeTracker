@@ -1,5 +1,6 @@
 ﻿using Hans.App.TimeTracker.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace Hans.App.TimeTracker.Interfaces
 {
@@ -15,6 +16,13 @@ namespace Hans.App.TimeTracker.Interfaces
         /// </summary>
         /// <param name="addRequest">Parameters needed to successfully create a new project.</param>
         /// <returns>The project ID that was created/existed.</returns>
-        Guid AddProject(AddProjectRequest addRequest);
+        Task<Guid> AddProject(AddProjectRequest addRequest);
+
+        /// <summary>
+        ///  Adds project data, by adding a user logged activity.  
+        /// </summary>
+        /// <param name="startTrackingRequest">All information necessary to create a new ProjectData row.</param>
+        /// <returns>The ID of the newly created row.</returns>
+        Task<Guid> AddProjectData(StartTrackingRequest startTrackingRequest);
     }
 }

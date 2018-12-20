@@ -1,6 +1,7 @@
 ﻿using Hans.App.TimeTracker.Interfaces;
 using Hans.App.TimeTracker.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace Hans.App.TimeTracker.Handlers
 {
@@ -32,9 +33,19 @@ namespace Hans.App.TimeTracker.Handlers
         /// </summary>
         /// <param name="addRequest">The parameters necessary to add a new project.</param>
         /// <returns>The project ID, or empty if unsuccessful.</returns>
-        public Guid AddProject(AddProjectRequest addRequest)
+        public async Task<Guid> AddProject(AddProjectRequest addRequest)
         {
-            return this._timeTrackerDAO.AddProject(addRequest);
+            return await this._timeTrackerDAO.AddProject(addRequest);
+        }
+
+        /// <summary>
+        ///  Starts tracking a project for a particular user.
+        /// </summary>
+        /// <param name="startRequest">All request information needed to handle the start.</param>
+        /// <returns>Nothing, is async.</returns>
+        public async Task<Guid> StartTracking(StartTrackingRequest startRequest)
+        {
+            return await this._timeTrackerDAO.AddProjectData(startRequest);
         }
 
         #endregion

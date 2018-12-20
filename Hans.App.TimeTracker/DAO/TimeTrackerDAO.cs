@@ -3,6 +3,7 @@ using Hans.App.TimeTracker.Interfaces;
 using Hans.App.TimeTracker.Models;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hans.App.TimeTracker.DAO
 {
@@ -35,7 +36,7 @@ namespace Hans.App.TimeTracker.DAO
         /// </summary>
         /// <param name="addRequest">Parameters needed to successfully create a new project.</param>
         /// <returns>The project ID that was created/existed.</returns>
-        public Guid AddProject(AddProjectRequest addRequest)
+        public async Task<Guid> AddProject(AddProjectRequest addRequest)
         {
             // Get the organization we're working with.
             Organization workingOrg = this.GetOrganization(addRequest.OrganizationName);
@@ -56,11 +57,48 @@ namespace Hans.App.TimeTracker.DAO
             // Add the new project to the DB.
             Project newProject = new Project() { Description = addRequest.ProjectName, Organization = workingOrg };
             this._dbContext.Add(newProject);
-            this._dbContext.SaveChanges();
-
-            // TODO: Look into Refreshing Here.
+            await this._dbContext.SaveChangesAsync();
 
             return newProject.Id;
+        }
+
+        /// <summary>
+        ///  Adds project data, by adding a user logged activity.  
+        /// </summary>
+        /// <param name="startTrackingRequest">All information necessary to create a new ProjectData row.</param>
+        /// <returns>The ID of the newly created row.</returns>
+        public async Task<Guid> AddProjectData(StartTrackingRequest startTrackingRequest)
+        {
+            // Get the organization we're working with.
+            Organization workingOrg = this.GetOrganization(startTrackingRequest.OrganizationName);
+            if (workingOrg == null)
+            {
+                Console.Error.WriteLine($"Organization { startTrackingRequest.OrganizationName } doesn't exist in our system.  Project won't be logged.");
+                return Guid.Empty;
+            }
+
+            // Get the user we're working with.
+            User workingUser = this.GetUser(startTrackingRequest.UserId);
+            if (workingUser == null)
+            {
+                Console.Error.WriteLine($"User { startTrackingRequest.UserId } doesn't exist in our system.  Project won't be logged.");
+                return Guid.Empty;
+            }
+
+            // Get the project we're working with.
+            Project workingProject = this._dbContext.Projects.FirstOrDefault(x => x.Description == startTrackingRequest.ProjectName && x.Organization.Id == workingOrg.Id);
+            if (workingProject == null)
+            {
+                Console.Error.WriteLine($"Project { startTrackingRequest.ProjectName } couldn't be found for organization { startTrackingRequest.OrganizationName }.  Project won't be logged.");
+                return Guid.Empty;
+            }
+
+            // Add the new log to our system.
+            ProjectData newData = new ProjectData() { Project = workingProject, User = workingUser, TimeStart = startTrackingRequest.StartTime };
+            this._dbContext.Add(newData);
+            await this._dbContext.SaveChangesAsync();
+
+            return newData.Id;
         }
 
         /// <summary>
@@ -71,6 +109,16 @@ namespace Hans.App.TimeTracker.DAO
         public Organization GetOrganization(string organizationName)
         {
             return this._dbContext.Organizations.FirstOrDefault(x => x.Description == organizationName);
+        }
+
+        /// <summary>
+        ///  Pulls a user, based on the name.
+        /// </summary>
+        /// <param name="userName">Name of the user we're searching for.</param>
+        /// <returns>The user found by name, or null if none was found.</returns>
+        public User GetUser(string userName)
+        {
+            return this._dbContext.Users.FirstOrDefault(x => x.UserName == userName);
         }
     }
 }
