@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hans.App.TimeTracker.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20181219224331_OrganizationsAdded")]
-    partial class OrganizationsAdded
+    [Migration("20181220011304_TimeTrackerDB")]
+    partial class TimeTrackerDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,11 @@ namespace Hans.App.TimeTracker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Organizations");
+
+                    b.HasData(
+                        new { Id = new Guid("00000000-0000-0000-0000-000000000001"), Description = "DevOrg_01", ExternalApplication = "Slack" },
+                        new { Id = new Guid("00000000-0000-0000-0000-000000000002"), Description = "DevOrg_02", ExternalApplication = "Slack" }
+                    );
                 });
 
             modelBuilder.Entity("Hans.App.TimeTracker.Models.Project", b =>
@@ -56,7 +61,7 @@ namespace Hans.App.TimeTracker.Migrations
 
                     b.Property<Guid?>("ProjectId");
 
-                    b.Property<DateTime>("TimeEnd");
+                    b.Property<DateTime?>("TimeEnd");
 
                     b.Property<DateTime>("TimeStart");
 
@@ -96,6 +101,10 @@ namespace Hans.App.TimeTracker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new { Id = new Guid("00000000-0000-0000-0000-000000000001"), ExternalId = "User01", UserName = "DevUser_01" }
+                    );
                 });
 
             modelBuilder.Entity("Hans.App.TimeTracker.Models.Project", b =>

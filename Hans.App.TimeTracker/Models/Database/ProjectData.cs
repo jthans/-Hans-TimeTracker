@@ -14,7 +14,15 @@ namespace Hans.App.TimeTracker.Models
         ///  How long this activity lasted - Kept here, for simplicity of calculations.
         /// </summary>
         [NotMapped]
-        public TimeSpan Duration { get { return this.TimeEnd - this.TimeStart; } }
+        public TimeSpan Duration
+        {
+            get
+            {
+                return this.TimeEnd.HasValue ?
+                          this.TimeEnd.Value - this.TimeStart :
+                          DateTime.Now - this.TimeStart;
+            }
+        }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -28,7 +36,7 @@ namespace Hans.App.TimeTracker.Models
         /// <summary>
         ///  Gets or sets the ending time of the activity.
         /// </summary>
-        public DateTime TimeEnd { get; set; }
+        public DateTime? TimeEnd { get; set; }
 
         /// <summary>
         ///  Gets or sets the start time of the activity.

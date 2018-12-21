@@ -1,9 +1,15 @@
-﻿using Hans.App.TimeTracker.Interfaces;
+﻿using Hans.App.TimeTracker.Enums;
+using Hans.App.TimeTracker.Interfaces;
 using Hans.App.TimeTracker.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace Hans.App.TimeTracker.Handlers
 {
+    /// <summary>
+    ///  Handler that manages the time tracking business logic, anything that isn't data related but handles
+    ///     what happens when certain requests come in happens here.
+    /// </summary>
     public class TimeTrackerHandler : ITimeTrackerHandler
     {
         #region Fields
@@ -32,9 +38,32 @@ namespace Hans.App.TimeTracker.Handlers
         /// </summary>
         /// <param name="addRequest">The parameters necessary to add a new project.</param>
         /// <returns>The project ID, or empty if unsuccessful.</returns>
-        public Guid AddProject(AddProjectRequest addRequest)
+        public async Task<Guid> AddProject(AddProjectRequest addRequest)
         {
-            return this._timeTrackerDAO.AddProject(addRequest);
+            return await this._timeTrackerDAO.AddProject(addRequest);
+        }
+
+        /// <summary>
+        ///  Starts tracking a project for a particular user.
+        /// </summary>
+        /// <param name="startRequest">All request information needed to handle the start.</param>
+        /// <returns>Nothing, is async.</returns>
+        public async Task<StartTrackingResult> StartTracking(StartTrackingRequest startRequest)
+        {
+            // See if any projects are open for this user - If so, we'll need to stop tracking that project.
+            var openProject = this._timeTrackerDAO.FindOpenProject(startRequest.OrganizationName, startRequest.UserId);
+            if (openProject != null)
+            {
+                if (openProject.Project.Description == startRequest.ProjectName)
+                {
+                    return StartTrackingResult.ProjectAlreadyStarted;
+                }
+
+                // This is a different project - Stop tracking this project.
+                await this._timeTrackerDAO.FinishProjectData(openProject.Id, startRequest.StartTime);
+            }
+
+            return await this._timeTrackerDAO.AddProjectData(startRequest) != Guid.Empty ? StartTrackingResult.Success : StartTrackingResult.Failure;
         }
 
         #endregion
