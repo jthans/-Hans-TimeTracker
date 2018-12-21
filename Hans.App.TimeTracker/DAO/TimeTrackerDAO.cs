@@ -137,7 +137,7 @@ namespace Hans.App.TimeTracker.DAO
         /// </summary>
         /// <param name="organizationName">Name of the organization to search for.</param>
         /// <returns>The organization found by name, or null if none was found.</returns>
-        public Organization GetOrganization(string organizationName)
+        public virtual Organization GetOrganization(string organizationName)
         {
             return this._dbContext.Organizations.FirstOrDefault(x => x.Description == organizationName);
         }
@@ -147,7 +147,7 @@ namespace Hans.App.TimeTracker.DAO
         /// </summary>
         /// <param name="userName">Name of the user we're searching for.</param>
         /// <returns>The user found by name, or null if none was found.</returns>
-        public User GetUser(string userName)
+        public virtual User GetUser(string userName)
         {
             return this._dbContext.User.FirstOrDefault(x => x.UserName == userName);
         }

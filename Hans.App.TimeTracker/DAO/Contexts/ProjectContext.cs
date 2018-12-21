@@ -21,19 +21,19 @@ namespace Hans.App.TimeTracker.DataContexts
         }
 
         // Organizations Table
-        public DbSet<Organization> Organizations { get; set; }
+        public virtual DbSet<Organization> Organizations { get; set; }
 
         // Projects Table
-        public DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
 
         // ProjectData Table
-        public DbSet<ProjectData> ProjectData { get; set; }
+        public virtual DbSet<ProjectData> ProjectData { get; set; }
 
         // Project/User Composite Table
-        public DbSet<ProjectUser> ProjectUserAssociations { get; set; }
+        public virtual DbSet<ProjectUser> ProjectUserAssociations { get; set; }
 
         // User Table
-        public DbSet<User> User { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         #region Events
 
