@@ -1,6 +1,7 @@
 ﻿using Hans.App.TimeTracker.DataContexts;
 using Hans.App.TimeTracker.Interfaces;
 using Hans.App.TimeTracker.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace Hans.App.TimeTracker.DAO
         /// </summary>
         /// <param name="startTrackingRequest">All information necessary to create a new ProjectData row.</param>
         /// <returns>The ID of the newly created row.</returns>
-        public async Task<Guid> AddProjectData(StartTrackingRequest startTrackingRequest)
+        public virtual async Task<Guid> AddProjectData(StartTrackingRequest startTrackingRequest)
         {
             // Get the organization we're working with.
             Organization workingOrg = this.GetOrganization(startTrackingRequest.OrganizationName);
@@ -121,10 +122,11 @@ namespace Hans.App.TimeTracker.DAO
         /// <param name="organizationName">Name of the organization the user exists within.</param>
         /// <param name="userName">Name of the user to search for.</param>
         /// <returns>The project data that's open, if any - Null if none.</returns>
-        public ProjectData FindOpenProject(string organizationName, string userName)
+        public virtual ProjectData FindOpenProject(string organizationName, string userName)
         {
             // Get the most recent ProjectData entry that has not been closed out (TimeEnd == NULL)
-            return this._dbContext.ProjectData.OrderByDescending(x => x.TimeStart)
+            return this._dbContext.ProjectData.Include(x => x.Project)
+                                                .OrderByDescending(x => x.TimeStart)
                                                 .FirstOrDefault(x => x.Project.Organization.Description == organizationName && 
                                                                         !x.TimeEnd.HasValue &&
                                                                         x.User.UserName == userName);

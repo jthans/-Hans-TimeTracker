@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Hans.App.TimeTracker.Handlers
 {
+    /// <summary>
+    ///  Handler that manages the time tracking business logic, anything that isn't data related but handles
+    ///     what happens when certain requests come in happens here.
+    /// </summary>
     public class TimeTrackerHandler : ITimeTrackerHandler
     {
         #region Fields
