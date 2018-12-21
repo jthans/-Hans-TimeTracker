@@ -1,0 +1,40 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'VS2017-Win2016'
+
+variables:
+  solution: '**/Hans-Core.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@0
+
+# Restore Nuget Packages
+- task: NuGetCommand@2
+  displayName: 'NuGet Restore'
+  inputs:
+    restoreSolution: '$(solution)'
+
+# Build Solution Files
+- task: VSBuild@1
+  displayName: '.Net Build'
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+# Unit Testing
+- task: DotNetCoreCLI@2
+  displayName: 'Run Unit Tests'
+  inputs:
+    command: test
+    projects: '**\*Test.csproj'
+    arguments: '--configuration $(BuildConfiguration) --collect "Code coverage" --filter TestCategory!="LocalDependent"'
