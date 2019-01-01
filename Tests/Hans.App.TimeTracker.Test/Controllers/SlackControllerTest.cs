@@ -75,6 +75,22 @@ namespace Hans.App.TimeTracker.Test.Controllers
 
         #endregion
 
+        #region Request
+        
+        /// <summary>
+        ///  Ensures the echo endpoint successfully returns the expected result.
+        /// </summary>
+        [TestMethod]
+        public void Request_ReturnsSuccess()
+        {
+            var echoResult = new SlackController(this.mockHandler.Object).Request(new Slack.SlackRequest { Text = "TEST" }) as JsonResult;
+
+            Assert.IsNotNull(echoResult);
+            Assert.AreEqual(200, echoResult.StatusCode);
+        }
+
+        #endregion
+
         #region StartTracking
 
         /// <summary>

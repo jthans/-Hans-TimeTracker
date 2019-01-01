@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace Hans.Slack
 {
@@ -85,5 +86,31 @@ namespace Hans.Slack
         /// </summary>
         [DataMember(Name = "user_name")]
         public string UserName { get; set; }
+
+        /// <summary>
+        ///  Returns a String Representation of the Model.
+        /// </summary>
+        /// <returns>All Values Enumerated.</returns>
+        public override string ToString()
+        {
+            string requestBody = $"Slack Request [{ DateTime.Now }]:\n";
+
+            // Build the Model.
+            requestBody += $"ChannelId: { this.ChannelId }\n";
+            requestBody += $"ChannelName: { this.ChannelName }\n";
+            requestBody += $"Command: { this.Command }\n";
+            requestBody += $"EnterpriseId: { this.EnterpriseId }\n";
+            requestBody += $"EnterpriseName: { this.EnterpriseName }\n";
+            requestBody += $"ResponseUrl: { this.ResponseUrl }\n";
+            requestBody += $"TeamDomain: { this.TeamDomain }\n";
+            requestBody += $"TeamId: { this.TeamId }\n";
+            requestBody += $"Text: { this.Text }\n";
+            requestBody += $"Token: { this.Token }\n";
+            requestBody += $"TriggerId: { this.TriggerId }\n";
+            requestBody += $"UserId: { this.UserId }\n";
+            requestBody += $"UserName: { this.UserName }\n";
+
+            return requestBody;
+        }
     }
 }

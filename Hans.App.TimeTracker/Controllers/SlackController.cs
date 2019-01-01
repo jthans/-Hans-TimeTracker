@@ -70,6 +70,19 @@ namespace Hans.App.TimeTracker.Controllers
         }
 
         /// <summary>
+        ///  Echoes the request contents back out to the user, for debugging purposes.
+        /// </summary>
+        /// <param name="slackRequest">The request we're researching.</param>
+        /// <returns>The request information.</returns>
+        [HttpPost]
+        [Route("api/slack/request")]
+        public ActionResult Request(SlackRequest slackRequest)
+        {
+            // Return the Model.
+            return new JsonResult(slackRequest.ToString()) { StatusCode = 200 };
+        }
+
+        /// <summary>
         ///  Starts tracking a project for the calling user.  
         /// </summary>
         /// <param name="requestModel">The request information, containing user/organization/text information.</param>
