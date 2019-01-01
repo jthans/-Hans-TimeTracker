@@ -5,7 +5,9 @@ namespace Hans.Slack
 {
     /// <summary>
     ///  Base model for Slack requests that contain all fields a Slack API would be sending to us on a command or webhook call.  Ideally, APIs that 
-    ///     consume Slack services will accept *only* this data type.    /// </summary>
+    ///     consume Slack services will accept *only* this data type.    
+    /// </summary>
+    [DataContract]
     public class SlackRequest
     {
         /// <summary>
