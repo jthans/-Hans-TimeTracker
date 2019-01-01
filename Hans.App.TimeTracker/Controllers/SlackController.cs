@@ -42,15 +42,15 @@ namespace Hans.App.TimeTracker.Controllers
         {
             // Make sure we're getting some information.
             if (slackRequest == null ||
-                string.IsNullOrEmpty(slackRequest.Text))
+                string.IsNullOrEmpty(slackRequest.text))
             {
                 return new JsonResult($"ERROR: No Data Passed.") { StatusCode = 400 };
             }
 
             AddProjectRequest addRequest = new AddProjectRequest
             {
-                OrganizationName = slackRequest.TeamId,
-                ProjectName = slackRequest.Text
+                OrganizationName = slackRequest.team_id,
+                ProjectName = slackRequest.text
             };
 
             this._timeTrackingHandler.AddProject(addRequest);
@@ -66,7 +66,7 @@ namespace Hans.App.TimeTracker.Controllers
         [Route("api/slack/echo")]
         public ActionResult Echo(SlackRequest slackRequest)
         {
-            return new JsonResult($"_{ slackRequest?.Text }_") { StatusCode = 200 };
+            return new JsonResult($"_{ slackRequest?.text }_") { StatusCode = 200 };
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Hans.App.TimeTracker.Controllers
         public ActionResult Request(SlackRequest slackRequest)
         {
             // Return the Model.
-            return new JsonResult(slackRequest.ToString()) { StatusCode = 200 };
+            return new JsonResult($"```{ slackRequest.ToString() }```") { StatusCode = 200 };
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Hans.App.TimeTracker.Controllers
         {
             // Make sure we're getting some information.
             if (slackRequest == null ||
-                string.IsNullOrEmpty(slackRequest.Text))
+                string.IsNullOrEmpty(slackRequest.text))
             {
                 return new JsonResult($"ERROR: No Data Passed.") { StatusCode = 400 };
             }
@@ -101,10 +101,10 @@ namespace Hans.App.TimeTracker.Controllers
             // Create the request object, and let the handler handle it.
             StartTrackingRequest startRequest = new StartTrackingRequest
             {
-                OrganizationName = slackRequest.TeamId,
-                ProjectName = slackRequest.Text,
+                OrganizationName = slackRequest.team_id,
+                ProjectName = slackRequest.text,
                 StartTime = DateTime.Now,
-                UserId = slackRequest.UserId
+                UserId = slackRequest.user_id
             };
 
             // Determine the proper error message for the result calculated.
@@ -139,7 +139,7 @@ namespace Hans.App.TimeTracker.Controllers
         {
             // Make sure we're getting some information.
             if (slackRequest == null ||
-                string.IsNullOrEmpty(slackRequest.Text))
+                string.IsNullOrEmpty(slackRequest.text))
             {
                 return new JsonResult($"ERROR: No Data Passed.") { StatusCode = 400 };
             }
@@ -147,12 +147,12 @@ namespace Hans.App.TimeTracker.Controllers
             // Save the parameters over the request, if applicable.
             if (!string.IsNullOrEmpty(userId))
             {
-                slackRequest.UserId = userId;
+                slackRequest.user_id = userId;
             }
 
             if (!string.IsNullOrEmpty(projectName))
             {
-                slackRequest.Text = projectName;
+                slackRequest.text = projectName;
             }
 
             // Call StartTracking with our modified parameters.
@@ -177,8 +177,8 @@ namespace Hans.App.TimeTracker.Controllers
             // Create the request, and process it.
             StopTrackingRequest stopRequest = new StopTrackingRequest
             {
-                OrganizationName = slackRequest.TeamId,
-                UserId = slackRequest.UserId
+                OrganizationName = slackRequest.team_id,
+                UserId = slackRequest.user_id
             };
 
             // Determine the proper error message for the result calculated.
@@ -218,7 +218,7 @@ namespace Hans.App.TimeTracker.Controllers
             // Save the parameters over the request, if applicable.
             if (!string.IsNullOrEmpty(userId))
             {
-                slackRequest.UserId = userId;
+                slackRequest.user_id = userId;
             }
 
             // Stop Tracking with our new parameters.

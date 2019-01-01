@@ -51,7 +51,7 @@ namespace Hans.App.TimeTracker.Test.Controllers
         [TestMethod]
         public void AddProject_ReturnsSuccess()
         {
-            var addResult = new SlackController(this.mockHandler.Object).AddProject(new Slack.SlackRequest { Text = "TEST" }) as JsonResult;
+            var addResult = new SlackController(this.mockHandler.Object).AddProject(new Slack.SlackRequest { text = "TEST" }) as JsonResult;
 
             Assert.IsNotNull(addResult);
             Assert.AreEqual(200, addResult.StatusCode);
@@ -67,7 +67,7 @@ namespace Hans.App.TimeTracker.Test.Controllers
         [TestMethod]
         public void Echo_ReturnsSuccess()
         {
-            var echoResult = new SlackController(this.mockHandler.Object).Echo(new Slack.SlackRequest { Text = "TEST" }) as JsonResult;
+            var echoResult = new SlackController(this.mockHandler.Object).Echo(new Slack.SlackRequest { text = "TEST" }) as JsonResult;
 
             Assert.IsNotNull(echoResult);
             Assert.AreEqual(200, echoResult.StatusCode);
@@ -83,7 +83,7 @@ namespace Hans.App.TimeTracker.Test.Controllers
         [TestMethod]
         public void Request_ReturnsSuccess()
         {
-            var echoResult = new SlackController(this.mockHandler.Object).Request(new Slack.SlackRequest { Text = "TEST" }) as JsonResult;
+            var echoResult = new SlackController(this.mockHandler.Object).Request(new Slack.SlackRequest { text = "TEST" }) as JsonResult;
 
             Assert.IsNotNull(echoResult);
             Assert.AreEqual(200, echoResult.StatusCode);
@@ -123,7 +123,7 @@ namespace Hans.App.TimeTracker.Test.Controllers
         [TestMethod]
         public void StartTracking_ReturnsSuccess()
         {
-            var startResult = new SlackController(this.mockHandler.Object).StartTracking(new Slack.SlackRequest { Text = "TEST" }) as JsonResult;
+            var startResult = new SlackController(this.mockHandler.Object).StartTracking(new Slack.SlackRequest { text = "TEST" }) as JsonResult;
 
             Assert.IsNotNull(startResult);
             Assert.AreEqual(200, startResult.StatusCode);
@@ -159,7 +159,7 @@ namespace Hans.App.TimeTracker.Test.Controllers
         [TestMethod]
         public void StartTrackingWithParams_ReturnsSuccess()
         {
-            var startResult = new SlackController(this.mockHandler.Object).StartTrackingWithParams(new Slack.SlackRequest { Text = "TEST" }, "DevUser_01", "TestProj_01") as JsonResult;
+            var startResult = new SlackController(this.mockHandler.Object).StartTrackingWithParams(new Slack.SlackRequest { text = "TEST" }, "DevUser_01", "TestProj_01") as JsonResult;
 
             Assert.IsNotNull(startResult);
             Assert.AreEqual(200, startResult.StatusCode);
@@ -187,7 +187,7 @@ namespace Hans.App.TimeTracker.Test.Controllers
         [TestMethod]
         public void StopTracking_ReturnsSuccess()
         {
-            var stopResult = new SlackController(this.mockHandler.Object).StopTracking(new Slack.SlackRequest { Text = "TEST" }) as JsonResult;
+            var stopResult = new SlackController(this.mockHandler.Object).StopTracking(new Slack.SlackRequest { text = "TEST" }) as JsonResult;
 
             Assert.IsNotNull(stopResult);
             Assert.AreEqual(200, stopResult.StatusCode);
@@ -211,7 +211,7 @@ namespace Hans.App.TimeTracker.Test.Controllers
         [TestMethod]
         public void StopTrackingWithParams_ReturnsSuccess()
         {
-            var stopResult = new SlackController(this.mockHandler.Object).StopTrackingWithParams(new Slack.SlackRequest { Text = "TEST" }, "DevUser_01") as JsonResult;
+            var stopResult = new SlackController(this.mockHandler.Object).StopTrackingWithParams(new Slack.SlackRequest { text = "TEST" }, "DevUser_01") as JsonResult;
 
             Assert.IsNotNull(stopResult);
             Assert.AreEqual(200, stopResult.StatusCode);

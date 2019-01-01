@@ -14,80 +14,80 @@ namespace Hans.Slack
         ///  The channel ID (Slack DB) the request originated from.
         /// </summary>
         [DataMember(Name = "channel_id")]
-        public string ChannelId { get; set; }
+        public string channel_id { get; set; }
 
         /// <summary>
         ///  The name of the channel the request originated from.
         /// </summary>
         [DataMember(Name = "channel_name")]
-        public string ChannelName { get; set; }
+        public string channel_name { get; set; }
 
         /// <summary>
         ///  The command that was called to trigger this API call.
         /// </summary>
         [DataMember(Name = "command")]
-        public string Command { get; set; }
+        public string command { get; set; }
 
         /// <summary>
         ///  The enterprise ID (Slack DB) the crequest originated from.
         /// </summary>
         [DataMember(Name = "enterprise_id")]
-        public string EnterpriseId { get; set; }
+        public string enterprise_id { get; set; }
 
         /// <summary>
         ///  The enterprise name the request originated from.
         /// </summary>
         [DataMember(Name = "enterprise_name")]
-        public string EnterpriseName { get; set; }
+        public string enterprise_name { get; set; }
 
         /// <summary>
         ///  The URL we should respond to (in the event any interact with the user is necessary, we'll have to call this uri with our payload, to capture 
         ///     further input from the user.
         /// </summary>
         [DataMember(Name = "response_url")]
-        public string ResponseUrl { get; set; }
+        public string response_url { get; set; }
 
         /// <summary>
         ///  The team domain that the request originated from.
         /// </summary>
         [DataMember(Name = "team_domain")]
-        public string TeamDomain { get; set; }
+        public string team_domain { get; set; }
 
         /// <summary>
         ///  The team ID (Slack DB) that the request originated from.
         /// </summary>
         [DataMember(Name = "team_id")]
-        public string TeamId { get; set; }
+        public string team_id { get; set; }
 
         /// <summary>
         ///  Argubaly the most important part of the message - All text passed by the user.
         /// </summary>
         [DataMember(Name = "text")]
-        public string Text { get; set; }
+        public string text { get; set; }
 
         /// <summary>
         ///  Verification token - <i>Depreciated.</i>
         /// </summary>
         [DataMember(Name = "token")]
-        public string Token { get; set; }
+        public string token { get; set; }
 
         /// <summary>
         ///  ID (Slack DB) of the trigger that threw this command.
         /// </summary>
         [DataMember(Name = "trigger_id")]
-        public string TriggerId { get; set; }
+        public string trigger_id { get; set; }
 
         /// <summary>
         ///  User Id (Slack DB) that requested the endpoint.
         /// </summary>
         [DataMember(Name = "user_id")]
-        public string UserId { get; set; }
+        public string user_id { get; set; }
 
         /// <summary>
         ///  User's name that requested the content.
         /// </summary>
         [DataMember(Name = "user_name")]
-        public string UserName { get; set; }
+        public string user_name { get; set; }
 
         /// <summary>
         ///  Returns a String Representation of the Model.
@@ -98,19 +98,19 @@ namespace Hans.Slack
             string requestBody = $"Slack Request [{ DateTime.Now }]:\n";
 
             // Build the Model.
-            requestBody += $"ChannelId: { this.ChannelId }\n";
-            requestBody += $"ChannelName: { this.ChannelName }\n";
-            requestBody += $"Command: { this.Command }\n";
-            requestBody += $"EnterpriseId: { this.EnterpriseId }\n";
-            requestBody += $"EnterpriseName: { this.EnterpriseName }\n";
-            requestBody += $"ResponseUrl: { this.ResponseUrl }\n";
-            requestBody += $"TeamDomain: { this.TeamDomain }\n";
-            requestBody += $"TeamId: { this.TeamId }\n";
-            requestBody += $"Text: { this.Text }\n";
-            requestBody += $"Token: { this.Token }\n";
-            requestBody += $"TriggerId: { this.TriggerId }\n";
-            requestBody += $"UserId: { this.UserId }\n";
-            requestBody += $"UserName: { this.UserName }\n";
+            requestBody += $"ChannelId: { this.channel_id }\n";
+            requestBody += $"ChannelName: { this.channel_name }\n";
+            requestBody += $"Command: { this.command }\n";
+            requestBody += $"EnterpriseId: { this.enterprise_id }\n";
+            requestBody += $"EnterpriseName: { this.enterprise_name }\n";
+            requestBody += $"ResponseUrl: { this.response_url }\n";
+            requestBody += $"TeamDomain: { this.team_domain }\n";
+            requestBody += $"TeamId: { this.team_id }\n";
+            requestBody += $"Text: { this.text }\n";
+            requestBody += $"Token: { this.token }\n";
+            requestBody += $"TriggerId: { this.trigger_id }\n";
+            requestBody += $"UserId: { this.user_id }\n";
+            requestBody += $"UserName: { this.user_name }\n";
 
             return requestBody;
         }
