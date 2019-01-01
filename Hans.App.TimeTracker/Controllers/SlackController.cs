@@ -76,7 +76,7 @@ namespace Hans.App.TimeTracker.Controllers
         /// <returns>The request information.</returns>
         [HttpPost]
         [Route("api/slack/request")]
-        public ActionResult Request([FromBody] SlackRequest slackRequest)
+        public ActionResult Request(SlackRequest slackRequest)
         {
             // Return the Model.
             return new JsonResult(slackRequest.ToString()) { StatusCode = 200 };
