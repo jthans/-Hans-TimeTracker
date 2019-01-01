@@ -132,6 +132,8 @@ namespace Hans.App.TimeTracker.DAO
                                                                         x.User.UserName == userName);
         }
 
+        #region Accessors
+
         /// <summary>
         ///  Pulls an organization, based on the name.
         /// </summary>
@@ -151,5 +153,7 @@ namespace Hans.App.TimeTracker.DAO
         {
             return this._dbContext.User.FirstOrDefault(x => x.UserName == userName);
         }
+
+        #endregion
     }
 }

@@ -113,6 +113,94 @@ namespace Hans.App.TimeTracker.Test.Controllers
             Assert.AreEqual(200, startResult.StatusCode);
         }
 
+        /// <summary>
+        ///  Ensures when no body is received, returns a bad request result.
+        /// </summary>
+        [TestMethod]
+        public void StartTrackingWithParams_NullRequest_Fails()
+        {
+            var startResult = new SlackController(this.mockHandler.Object).StartTrackingWithParams(null) as JsonResult;
+
+            Assert.IsNotNull(startResult);
+            Assert.AreEqual(400, startResult.StatusCode);
+        }
+
+        /// <summary>
+        ///  Ensures that when a request is received, but with no parameters, returns a BAD_REQUEST.
+        /// </summary>
+        [TestMethod]
+        public void StartTrackingWithParams_NullText_Fails()
+        {
+            var startResult = new SlackController(this.mockHandler.Object).StartTrackingWithParams(new Slack.SlackRequest()) as JsonResult;
+
+            Assert.IsNotNull(startResult);
+            Assert.AreEqual(400, startResult.StatusCode);
+        }
+
+        /// <summary>
+        ///  Ensures that when a valid request is passed, a good status code is returned.
+        /// </summary>
+        [TestMethod]
+        public void StartTrackingWithParams_ReturnsSuccess()
+        {
+            var startResult = new SlackController(this.mockHandler.Object).StartTrackingWithParams(new Slack.SlackRequest { Text = "TEST" }, "DevUser_01", "TestProj_01") as JsonResult;
+
+            Assert.IsNotNull(startResult);
+            Assert.AreEqual(200, startResult.StatusCode);
+        }
+
+        #endregion
+
+        #region StopTracking
+
+        /// <summary>
+        ///  Ensures when no body is received, returns a bad request result.
+        /// </summary>
+        [TestMethod]
+        public void StopTracking_NullRequest_Fails()
+        {
+            var stopResult = new SlackController(this.mockHandler.Object).StopTracking(null) as JsonResult;
+
+            Assert.IsNotNull(stopResult);
+            Assert.AreEqual(400, stopResult.StatusCode);
+        }
+
+        /// <summary>
+        ///  Ensures that when a valid request is passed, a good status code is returned.
+        /// </summary>
+        [TestMethod]
+        public void StopTracking_ReturnsSuccess()
+        {
+            var stopResult = new SlackController(this.mockHandler.Object).StopTracking(new Slack.SlackRequest { Text = "TEST" }) as JsonResult;
+
+            Assert.IsNotNull(stopResult);
+            Assert.AreEqual(200, stopResult.StatusCode);
+        }
+
+        /// <summary>
+        ///  Ensures when no body is received, returns a bad request result.
+        /// </summary>
+        [TestMethod]
+        public void StopTrackingWithParams_NullRequest_Fails()
+        {
+            var stopResult = new SlackController(this.mockHandler.Object).StopTrackingWithParams(null) as JsonResult;
+
+            Assert.IsNotNull(stopResult);
+            Assert.AreEqual(400, stopResult.StatusCode);
+        }
+
+        /// <summary>
+        ///  Ensures that when a valid request is passed, a good status code is returned.
+        /// </summary>
+        [TestMethod]
+        public void StopTrackingWithParams_ReturnsSuccess()
+        {
+            var stopResult = new SlackController(this.mockHandler.Object).StopTrackingWithParams(new Slack.SlackRequest { Text = "TEST" }, "DevUser_01") as JsonResult;
+
+            Assert.IsNotNull(stopResult);
+            Assert.AreEqual(200, stopResult.StatusCode);
+        }
+
         #endregion
     }
 }

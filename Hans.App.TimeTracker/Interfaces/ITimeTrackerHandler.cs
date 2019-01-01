@@ -24,5 +24,12 @@ namespace Hans.App.TimeTracker.Interfaces
         /// <param name="startRequest">All request information needed to handle the start.</param>
         /// <returns>Nothing, is async.</returns>
         Task<StartTrackingResult> StartTracking(StartTrackingRequest startRequest);
+
+        /// <summary>
+        ///  Stops tracking whatever project a particular user is currently working on.
+        /// </summary>
+        /// <param name="stopRequest">The user information to stop tracking information for.</param>
+        /// <returns>The state of the stoppage, or NoProjectsOpen if no projects are available to stop tracking.</returns>
+        Task<StopTrackingResult> StopTracking(StopTrackingRequest stopRequest);
     }
 }

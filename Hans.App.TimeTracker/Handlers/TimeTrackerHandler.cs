@@ -66,6 +66,33 @@ namespace Hans.App.TimeTracker.Handlers
             return await this._timeTrackerDAO.AddProjectData(startRequest) != Guid.Empty ? StartTrackingResult.Success : StartTrackingResult.Failure;
         }
 
+        /// <summary>
+        ///  Stops tracking whatever project a particular user is currently working on.
+        /// </summary>
+        /// <param name="stopRequest">The user information to stop tracking information for.</param>
+        /// <returns>The state of the stoppage, or NoProjectsOpen if no projects are available to stop tracking.</returns>
+        public async Task<StopTrackingResult> StopTracking(StopTrackingRequest stopRequest)
+        {
+            // See if any projects are open for this user - If not, there's nothing to stop.
+            var openProject = this._timeTrackerDAO.FindOpenProject(stopRequest.OrganizationName, stopRequest.UserId);
+            if (openProject == null)
+            {
+                return StopTrackingResult.NoOpenProjects;
+            }
+
+            // Finish the project that's open for the user.  This will simply close it, at the time stop was called.
+            try
+            {
+                await this._timeTrackerDAO.FinishProjectData(openProject.Id, DateTime.Now);
+                return StopTrackingResult.Success;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error when stopping project { openProject.Id } for user { stopRequest.OrganizationName }/{ stopRequest.UserId }");
+                return StopTrackingResult.Failure;
+            }
+        }
+
         #endregion
     }
 }
