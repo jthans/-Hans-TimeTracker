@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace Hans.App.TimeTracker
@@ -43,7 +44,7 @@ namespace Hans.App.TimeTracker
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -63,6 +64,9 @@ namespace Hans.App.TimeTracker
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Time Tracker API v1");
             });
+
+            // Configure AWS Logging, since that's where we're currently hosting it.
+            loggerFactory.AddAWSProvider(this.Configuration.GetAWSLoggingConfigSection());
         }
     }
 }

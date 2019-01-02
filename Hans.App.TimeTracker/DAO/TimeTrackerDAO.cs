@@ -102,6 +102,15 @@ namespace Hans.App.TimeTracker.DAO
             return newData.Id;
         }
 
+        public async Task AddUser(string userName)
+        {
+            // Create a new user in the DB with the given username.
+            User newUser = new User() { UserName = userName, ExternalId = userName };
+
+            this._dbContext.Add(newUser);
+            await this._dbContext.SaveChangesAsync();
+        }
+
         /// <summary>
         ///  Finish tracking a particular activity record.
         /// </summary>

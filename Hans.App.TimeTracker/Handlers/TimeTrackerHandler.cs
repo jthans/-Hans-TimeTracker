@@ -1,6 +1,7 @@
 ﻿using Hans.App.TimeTracker.Enums;
 using Hans.App.TimeTracker.Interfaces;
 using Hans.App.TimeTracker.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -15,6 +16,11 @@ namespace Hans.App.TimeTracker.Handlers
         #region Fields
 
         /// <summary>
+        ///  Logger used to output information about the handler's actions.
+        /// </summary>
+        private readonly ILogger<TimeTrackerHandler> _log;
+
+        /// <summary>
         ///  DAO used to interact with the DB as we handle incoming requests.
         /// </summary>
         private readonly ITimeTrackerDAO _timeTrackerDAO;
@@ -23,8 +29,10 @@ namespace Hans.App.TimeTracker.Handlers
 
         #region Constructors
 
-        public TimeTrackerHandler(ITimeTrackerDAO timeTrackerDAO)
+        public TimeTrackerHandler(ILogger<TimeTrackerHandler> log,
+                                    ITimeTrackerDAO timeTrackerDAO)
         {
+            this._log = log;
             this._timeTrackerDAO = timeTrackerDAO;
         }
 
@@ -40,7 +48,16 @@ namespace Hans.App.TimeTracker.Handlers
         /// <returns>The project ID, or empty if unsuccessful.</returns>
         public async Task<Guid> AddProject(AddProjectRequest addRequest)
         {
-            return await this._timeTrackerDAO.AddProject(addRequest);
+            try
+            {
+                this._log.LogTrace($"Adding Project { addRequest.ProjectName }...");
+                return await this._timeTrackerDAO.AddProject(addRequest);
+            }
+            catch (Exception ex)
+            {
+                this._log.LogError($"Error when Adding Project. { ex.ToString() }");
+                return Guid.Empty;
+            }
         }
 
         /// <summary>
@@ -50,20 +67,31 @@ namespace Hans.App.TimeTracker.Handlers
         /// <returns>Nothing, is async.</returns>
         public async Task<StartTrackingResult> StartTracking(StartTrackingRequest startRequest)
         {
-            // See if any projects are open for this user - If so, we'll need to stop tracking that project.
-            var openProject = this._timeTrackerDAO.FindOpenProject(startRequest.OrganizationName, startRequest.UserId);
-            if (openProject != null)
+            try
             {
-                if (openProject.Project.Description == startRequest.ProjectName)
+                // See if any projects are open for this user - If so, we'll need to stop tracking that project.
+                this._log.LogTrace($"Checking for Open Projects.");
+                var openProject = this._timeTrackerDAO.FindOpenProject(startRequest.OrganizationName, startRequest.UserId);
+                if (openProject != null)
                 {
-                    return StartTrackingResult.ProjectAlreadyStarted;
+                    if (openProject.Project.Description == startRequest.ProjectName)
+                    {
+                        this._log.LogTrace($"User has already started project { startRequest.ProjectName }.");
+                        return StartTrackingResult.ProjectAlreadyStarted;
+                    }
+
+                    // This is a different project - Stop tracking this project.
+                    await this._timeTrackerDAO.FinishProjectData(openProject.Id, startRequest.StartTime);
                 }
 
-                // This is a different project - Stop tracking this project.
-                await this._timeTrackerDAO.FinishProjectData(openProject.Id, startRequest.StartTime);
+                this._log.LogTrace($"Starting Trace...");
+                return await this._timeTrackerDAO.AddProjectData(startRequest) != Guid.Empty ? StartTrackingResult.Success : StartTrackingResult.Failure;
             }
-
-            return await this._timeTrackerDAO.AddProjectData(startRequest) != Guid.Empty ? StartTrackingResult.Success : StartTrackingResult.Failure;
+            catch (Exception ex)
+            {
+                this._log.LogError($"Error when Starting Tracking. { ex.ToString() }");
+                return StartTrackingResult.Failure;
+            }
         }
 
         /// <summary>
@@ -74,9 +102,11 @@ namespace Hans.App.TimeTracker.Handlers
         public async Task<StopTrackingResult> StopTracking(StopTrackingRequest stopRequest)
         {
             // See if any projects are open for this user - If not, there's nothing to stop.
+            this._log.LogTrace($"Ensuring user already has a project started.");
             var openProject = this._timeTrackerDAO.FindOpenProject(stopRequest.OrganizationName, stopRequest.UserId);
             if (openProject == null)
             {
+                this._log.LogTrace($"User has no projects open.");
                 return StopTrackingResult.NoOpenProjects;
             }
 

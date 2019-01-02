@@ -4,6 +4,7 @@ using Hans.App.TimeTracker.Enums;
 using Hans.App.TimeTracker.Handlers;
 using Hans.App.TimeTracker.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -19,6 +20,11 @@ namespace Hans.App.TimeTracker.Test.Handlers
     public class TimeTrackerHandlerTest
     {
         #region Fields
+
+        /// <summary>
+        ///  Mock logger to satisfy constructor.
+        /// </summary>
+        private static Mock<ILogger<TimeTrackerHandler>> log;
         
         /// <summary>
         ///  Mock DAO necessary for manipulating the handler's logic.
@@ -40,6 +46,7 @@ namespace Hans.App.TimeTracker.Test.Handlers
             var projectContext = new Mock<ProjectContext>(dbOptions);
 
             // Create and save the DAO.
+            log = new Mock<ILogger<TimeTrackerHandler>>();
             timeTrackerDao = new Mock<TimeTrackerDAO>(projectContext.Object);
         }
 
@@ -70,7 +77,7 @@ namespace Hans.App.TimeTracker.Test.Handlers
                                             });
 
             // Handle the tracking start - We should expect to see the ProjectAlreadyStarted result.
-            var trackHandler = new TimeTrackerHandler(timeTrackerDao.Object);
+            var trackHandler = new TimeTrackerHandler(log.Object, timeTrackerDao.Object);
 
             var startTrackingRequest = new StartTrackingRequest { ProjectName = projName };
             Assert.AreEqual(StartTrackingResult.ProjectAlreadyStarted, trackHandler.StartTracking(startTrackingRequest).Result);
@@ -93,7 +100,7 @@ namespace Hans.App.TimeTracker.Test.Handlers
                           .Returns(Task.FromResult<Guid>(Guid.Empty));
 
             // Handle the tracking start - We should expect to see the Success result.
-            var trackHandler = new TimeTrackerHandler(timeTrackerDao.Object);
+            var trackHandler = new TimeTrackerHandler(log.Object, timeTrackerDao.Object);
 
             var startRequest = new StartTrackingRequest { ProjectName = "TEST_PROJ" };
             Assert.AreEqual(StartTrackingResult.Failure, trackHandler.StartTracking(startRequest).Result);
@@ -115,7 +122,7 @@ namespace Hans.App.TimeTracker.Test.Handlers
                           .Returns(Task.FromResult<Guid>(Guid.NewGuid()));
 
             // Handle the tracking start - We should expect to see the Success result.
-            var trackHandler = new TimeTrackerHandler(timeTrackerDao.Object);
+            var trackHandler = new TimeTrackerHandler(log.Object, timeTrackerDao.Object);
 
             var startRequest = new StartTrackingRequest { ProjectName = "TEST_PROJ" };
             Assert.AreEqual(StartTrackingResult.Success, trackHandler.StartTracking(startRequest).Result);
