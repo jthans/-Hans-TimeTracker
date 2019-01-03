@@ -58,7 +58,7 @@ namespace Hans.App.TimeTracker.DAO
             // Add the new project to the DB.
             Project newProject = new Project() { Description = addRequest.ProjectName, Organization = workingOrg };
             this._dbContext.Add(newProject);
-            await this._dbContext.SaveChangesAsync();
+            this._dbContext.SaveChanges();
 
             return newProject.Id;
         }
@@ -97,7 +97,7 @@ namespace Hans.App.TimeTracker.DAO
             // Add the new log to our system.
             ProjectData newData = new ProjectData() { Project = workingProject, User = workingUser, TimeStart = startTrackingRequest.StartTime };
             this._dbContext.Add(newData);
-            await this._dbContext.SaveChangesAsync();
+            this._dbContext.SaveChanges();
             
             return newData.Id;
         }
@@ -108,7 +108,7 @@ namespace Hans.App.TimeTracker.DAO
             User newUser = new User() { UserName = userName, ExternalId = userName };
 
             this._dbContext.Add(newUser);
-            await this._dbContext.SaveChangesAsync();
+            this._dbContext.SaveChanges();
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Hans.App.TimeTracker.DAO
             activityData.TimeEnd = timeFinished;
 
             this._dbContext.Update(activityData);
-            await this._dbContext.SaveChangesAsync();
+            this._dbContext.SaveChanges();
         }
 
         /// <summary>

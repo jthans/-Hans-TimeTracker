@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\AWSController.cs" />
     <Compile Remove="Handlers\SlackTrackingHandler.cs" />
   </ItemGroup>
 

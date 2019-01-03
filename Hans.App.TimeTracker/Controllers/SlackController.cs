@@ -70,6 +70,17 @@ namespace Hans.App.TimeTracker.Controllers
         }
 
         /// <summary>
+        ///  Index action for health-checking/landing page reasons.
+        /// </summary>
+        /// <returns>An index result.</returns>
+        [HttpGet]
+        [Route("")]
+        public ActionResult Index()
+        {
+            return new JsonResult($"Hans™") { StatusCode = 200 };
+        }
+
+        /// <summary>
         ///  Echoes the request contents back out to the user, for debugging purposes.
         /// </summary>
         /// <param name="slackRequest">The request we're researching.</param>
