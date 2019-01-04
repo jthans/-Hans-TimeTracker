@@ -129,5 +129,89 @@ namespace Hans.App.TimeTracker.Test.Handlers
         }
 
         #endregion
+
+        #region StopTracking
+
+        /// <summary>
+        ///  Ensures that when no projects are open for a user, we result in telling the user that nothing is available to be stopped.
+        /// </summary>
+        [TestMethod]
+        public void StopTracking_NoOpenProjects_Success()
+        {
+            // Return null when asking for a project - We have no projects open.
+            timeTrackerDao.Setup(x => x.FindOpenProject(It.IsAny<string>(),
+                                                             It.IsAny<string>()))
+                                            .Returns((ProjectData)null);
+
+            // Handle the tracking start - We should expect to see the ProjectAlreadyStarted result.
+            var trackHandler = new TimeTrackerHandler(log.Object, timeTrackerDao.Object);
+
+            var stopTrackingRequest = new StopTrackingRequest();
+            Assert.AreEqual(StopTrackingResult.NoOpenProjects, trackHandler.StopTracking(stopTrackingRequest).Result);
+        }
+
+        /// <summary>
+        ///  Ensures that the StopTracking method successfully stops the project, when the DAO says it has.
+        /// </summary>
+        [TestMethod]
+        public void StopTracking_ProjectCloses_Success()
+        {
+            // Return a project, so we can attempt to stop the project.
+            timeTrackerDao.Setup(x => x.FindOpenProject(It.IsAny<string>(),
+                                                 It.IsAny<string>()))
+                                .Returns(new Models.ProjectData
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Project = new Models.Project
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        Description = "TestProj"
+                                    }
+                                });
+
+            // Ensure the project data result returns a success.
+            timeTrackerDao.Setup(x => x.FinishProjectData(It.IsAny<Guid>(),
+                                                             It.IsAny<DateTime>()))
+                                            .Returns(Task.CompletedTask);
+
+            // Handle the tracking start - We should expect to see the ProjectAlreadyStarted result.
+            var trackHandler = new TimeTrackerHandler(log.Object, timeTrackerDao.Object);
+
+            var stopTrackingRequest = new StopTrackingRequest();
+            Assert.AreEqual(StopTrackingResult.Success, trackHandler.StopTracking(stopTrackingRequest).Result);
+        }
+
+        /// <summary>
+        ///  Ensures that if an exception is thrown, the handler indicates that a failure was encountered closing the project.
+        /// </summary>
+        [TestMethod]
+        public void StopTracking_DAOErrors_Failure()
+        {
+            // Return a project, so we can attempt to stop the project.
+            timeTrackerDao.Setup(x => x.FindOpenProject(It.IsAny<string>(),
+                                                 It.IsAny<string>()))
+                                .Returns(new Models.ProjectData
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Project = new Models.Project
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        Description = "TestProj"
+                                    }
+                                });
+
+            // Ensure the project data result returns an exception.
+            timeTrackerDao.Setup(x => x.FinishProjectData(It.IsAny<Guid>(),
+                                                             It.IsAny<DateTime>()))
+                                            .Throws<Exception>();
+
+            // Handle the tracking start - We should expect to see the ProjectAlreadyStarted result.
+            var trackHandler = new TimeTrackerHandler(log.Object, timeTrackerDao.Object);
+
+            var stopTrackingRequest = new StopTrackingRequest();
+            Assert.AreEqual(StopTrackingResult.Failure, trackHandler.StopTracking(stopTrackingRequest).Result);
+        }
+
+        #endregion
     }
 }

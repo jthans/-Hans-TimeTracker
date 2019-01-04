@@ -116,7 +116,7 @@ namespace Hans.App.TimeTracker.DAO
         /// </summary>
         /// <param name="activityId">Which activity we'd like to finish tracking.</param>
         /// <param name="timeFinished">The time the activity was finished.</param>
-        public async Task FinishProjectData(Guid activityId, DateTime timeFinished)
+        public async virtual Task FinishProjectData(Guid activityId, DateTime timeFinished)
         {
             var activityData = this._dbContext.ProjectData.FirstOrDefault(x => x.Id == activityId);
             activityData.TimeEnd = timeFinished;
