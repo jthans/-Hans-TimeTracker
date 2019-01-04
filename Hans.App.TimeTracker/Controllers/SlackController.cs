@@ -149,8 +149,7 @@ namespace Hans.App.TimeTracker.Controllers
         public ActionResult StartTrackingWithParams(SlackRequest slackRequest, [FromQuery] string userId = null, [FromQuery] string projectName = null)
         {
             // Make sure we're getting some information.
-            if (slackRequest == null ||
-                string.IsNullOrEmpty(slackRequest.text))
+            if (slackRequest == null)
             {
                 return new JsonResult($"ERROR: No Data Passed.") { StatusCode = 400 };
             }
