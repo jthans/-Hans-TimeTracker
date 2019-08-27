@@ -18,10 +18,12 @@ steps:
 - task: NuGetToolInstaller@0
 
 # Restore Nuget Packages
-- task: NuGetCommand@2
-  displayName: 'NuGet Restore'
-  inputs:
-    restoreSolution: '$(solution)'
+#- task: NuGetCommand@2
+#  displayName: 'NuGet Restore'
+#  inputs:
+#    restoreSolution: '$(solution)'
+    
+- script: dotnet restore
 
 # Build Solution Files
 - task: VSBuild@1
